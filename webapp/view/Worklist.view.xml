@@ -1,0 +1,115 @@
+<mvc:View
+	controllerName="employees2.controller.Worklist"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:l="sap.ui.layout">
+
+	<semantic:SemanticPage
+		id="page"
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false">
+
+		<semantic:titleHeading>
+			<Title
+				text="{i18n>worklistTitle}"
+				level="H2"/>
+		</semantic:titleHeading>
+
+        <semantic:headerContent>
+            <fb:FilterBar search="onSearchFilter" showRestoreButton="true" showClearButton="true">
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem groupName="G1" name="A" label="{i18n>tituloId}" visibleInFilterBar="true">
+                        <fb:control>
+                            <SearchField id="searchId" search="onSearchFilter" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+
+            <fb:filterGroupItems>
+                    <fb:FilterGroupItem groupName="G1" name="B" label="{i18n>tituloNome}" visibleInFilterBar="true">
+                        <fb:control>
+                            <SearchField id="searchName" search="onSearchFilter" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+
+            </fb:FilterBar>
+        </semantic:headerContent>
+
+		<semantic:content>
+			<Table
+				id="table"
+				width="auto"
+				items="{
+					path: '/Employees',
+					sorter: {
+						path: 'EmployeeID',
+						descending: false
+					}
+				}"
+				noDataText="{worklistView>/tableNoDataText}"
+				busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished">
+
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title
+							id="tableHeader"
+							text="{worklistView>/worklistTableTitle}"
+							level="H3"/>
+						<ToolbarSpacer />
+
+                        <Button
+                            text="{i18n>botaoExportar}" 
+                            class="sapUiSmallMarginBottom"
+                            press=".onConfirmationMessageBoxPress"     
+                            />
+
+					</OverflowToolbar>
+				</headerToolbar>
+
+				<columns>
+					<Column id="idColumn">
+						<Text text="{i18n>tituloId}" id="idColumnTitle"/>
+					</Column>
+                    <Column id="nameColumn">
+						<Text text="{i18n>tituloNome}" id="nameColumnTitle"/>
+					</Column>
+					<Column id="dateColumn">
+						<Text text="{i18n>tituloData}" id="dateColumnTitle"/>
+					</Column>
+				</columns>
+
+				<items>
+					<ColumnListItem
+						type="Navigation"
+						press=".onPress">
+						<cells>
+							<ObjectIdentifier
+								title="{EmployeeID}"/>
+                            <ObjectIdentifier
+								text="{FirstName}"/>
+							<Text 
+                                text="{
+                                    path: 'BirthDate',
+                                    formatter: '.formatter.converteData'
+                                    
+                                    }"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onShareEmailPress"/>
+		</semantic:sendEmailAction>
+
+
+	</semantic:SemanticPage>
+
+</mvc:View>
